@@ -831,7 +831,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B8B3F66D67BD3E6B2C9A66F0 /* [CP] Check Pods Manifest.lock */ = {
+	B8B3F66D67BD3E6B2C9A66F0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
