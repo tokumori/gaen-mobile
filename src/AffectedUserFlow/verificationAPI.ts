@@ -5,8 +5,8 @@ const verifyUrl = `${baseUrl}/api/verify`
 const certificateUrl = `${baseUrl}/api/certificate`
 
 const defaultHeaders = {
-  "content-type": "application/json",
-  accept: "application/json",
+  "Content-Type": "application/json",
+  "Accept": "application/json",
   "X-API-Key": env.GAEN_VERIFY_API_TOKEN,
 }
 
@@ -42,6 +42,10 @@ interface VerifiedCodeResponse {
   token: Token
 }
 
+function reqListener () {
+  console.log('reqListener', this.responseText);
+}
+
 export const postCode = async (
   code: string,
 ): Promise<NetworkResponse<CodeVerificationSuccess, CodeVerificationError>> => {
@@ -49,14 +53,27 @@ export const postCode = async (
     code,
   }
 
+  console.log('hello john')
+
   try {
+
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    oReq.open("GET", verifyUrl);
+    oReq.send();
+
+    //const response = await fetch(`www.google.com`)
     const response = await fetch(verifyUrl, {
-      method: "POST",
-      headers: defaultHeaders,
-      body: JSON.stringify(data),
+       method: "POST",
+       headers: defaultHeaders,
+       body: JSON.stringify(data),
     })
 
     const json = await response.json()
+
+    console.log(response)
+    console.log(json)
+
     if (response.ok) {
       const body: VerifiedCodeResponse = {
         error: json.error,
@@ -66,6 +83,7 @@ export const postCode = async (
       }
       return { kind: "success", body }
     } else {
+      console.log("line 86", json)
       switch (json.error) {
         case "internal server error":
           return { kind: "failure", error: "InvalidCode" }
@@ -76,6 +94,7 @@ export const postCode = async (
       }
     }
   } catch (e) {
+    console.log(`line 97 exception`, e)
     return { kind: "failure", error: "Unknown" }
   }
 }
