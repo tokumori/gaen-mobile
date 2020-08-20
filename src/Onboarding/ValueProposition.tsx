@@ -20,10 +20,12 @@ const ValueProposition: FunctionComponent = () => {
   }
 
   const onboardingScreenActions = {
-    primaryButtonOnPress: () =>
-      navigation.navigate(Stacks.Activation, {
-        screen: ActivationScreens.ActivateProximityTracing,
-      }),
+    primaryButtonOnPress: () => {
+      console.log({ stack: Stacks.Activation })
+      return navigation.navigate(Stacks.Activation, {
+        screen: ActivationScreens.AcceptEula,
+      })
+    },
   }
 
   return (
