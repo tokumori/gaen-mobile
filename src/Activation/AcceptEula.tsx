@@ -1,15 +1,13 @@
-import React, { useEffect, useState, FunctionComponent } from "react"
+import React, { useState, FunctionComponent } from "react"
+import env from "react-native-config"
 import {
   TouchableOpacity,
   Linking,
   StyleSheet,
   View,
   SafeAreaView,
-  ActivityIndicator,
 } from "react-native"
 import { useTranslation } from "react-i18next"
-import loadLocalResource from "react-native-local-resource"
-import WebView, { WebViewNavigation } from "react-native-webview"
 import { useNavigation } from "@react-navigation/native"
 import { SvgXml } from "react-native-svg"
 
@@ -17,63 +15,36 @@ import { Icons } from "../assets"
 import { GlobalText } from "../components/GlobalText"
 import { ActivationScreens } from "../navigation"
 import { Button } from "../components/Button"
-import enEulaHtml from "../locales/eula/en.html"
-import esPREulaHtml from "../locales/eula/es_PR.html"
-import htEulaHtml from "../locales/eula/ht.html"
 
-import { Forms, Iconography, Colors, Spacing, Outlines } from "../styles"
+import {
+  Forms,
+  Iconography,
+  Colors,
+  Spacing,
+  Outlines,
+  Typography,
+} from "../styles"
 import { useStatusBarEffect } from "../navigation"
-
-const LoadingIndicator = () => {
-  return (
-    <View style={style.loadingIndicator}>
-      <ActivityIndicator size={"large"} color={Colors.neutral100} />
-    </View>
-  )
-}
-
-const DEFAULT_EULA_URL = "about:blank"
-type AvailableLocale = "en" | "es_PR" | "ht"
+import arrow from "../assets/svgs/arrow"
+import LinearGradient from "react-native-linear-gradient"
 
 const AcceptEula: FunctionComponent = () => {
   useStatusBarEffect("dark-content")
-  const [html, setHtml] = useState<string | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true)
   const [boxChecked, toggleCheckbox] = useState(false)
-  const {
-    t,
-    i18n: { language: localeCode },
-  } = useTranslation()
+  const { t } = useTranslation()
   const navigation = useNavigation()
-
-  const EULA_FILES: Record<AvailableLocale, string> = {
-    ["en"]: enEulaHtml,
-    ["es_PR"]: esPREulaHtml,
-    ["ht"]: htEulaHtml,
-  }
-  const eulaPath = EULA_FILES[localeCode as AvailableLocale] || enEulaHtml
-
-  const shouldStartLoadWithRequestHandler = (
-    webViewState: WebViewNavigation,
-  ) => {
-    let shouldLoadRequest = true
-    if (webViewState.url !== DEFAULT_EULA_URL) {
-      Linking.openURL(webViewState.url)
-      shouldLoadRequest = false
-    }
-    return shouldLoadRequest
-  }
-  useEffect(() => {
-    const loadEula = async () => {
-      setHtml(await loadLocalResource(eulaPath))
-    }
-    loadEula()
-  }, [eulaPath])
 
   const handleOnPressNext = () => {
     navigation.navigate(ActivationScreens.ActivateProximityTracing)
   }
 
+  const linkToPrivacyPolicy = async () => {
+    await Linking.openURL(env.PRIVACY_POLICY_URL)
+  }
+
+  const linkToEula = async () => {
+    await Linking.openURL(env.PRIVACY_POLICY_URL)
+  }
   const checkboxIcon = boxChecked
     ? Icons.CheckboxChecked
     : Icons.CheckboxUnchecked
@@ -83,78 +54,131 @@ const AcceptEula: FunctionComponent = () => {
     : t("label.unchecked_checkbox")
 
   return (
-    <SafeAreaView style={style.container}>
-      {html && (
-        <>
-          <WebView
-            onLoad={() => setIsLoading(false)}
-            source={{ html }}
-            onShouldStartLoadWithRequest={shouldStartLoadWithRequestHandler}
-          />
-          {isLoading ? <LoadingIndicator /> : null}
-        </>
-      )}
-      <View style={style.footerContainer}>
-        <TouchableOpacity
-          style={style.checkboxContainer}
-          onPress={() => toggleCheckbox(!boxChecked)}
-          accessible
-          accessibilityRole="checkbox"
-          accessibilityLabel={checkboxLabel}
-          testID="accept-terms-of-use-checkbox"
-        >
-          <SvgXml
-            xml={checkboxIcon}
-            fill={Colors.primary100}
-            width={Iconography.small}
-            height={Iconography.small}
-          />
-          <GlobalText style={style.checkboxText}>
-            {t("onboarding.eula_agree_terms_of_use")}
-          </GlobalText>
-        </TouchableOpacity>
-        <Button
-          onPress={handleOnPressNext}
-          disabled={!boxChecked}
-          label={t("common.continue")}
+    <LinearGradient
+      start={{ x: 0, y: 0 }}
+      colors={Colors.gradientPrimary10}
+      style={style.backgroundGradient}
+    >
+      <SafeAreaView style={style.container}>
+        <GlobalText style={style.headerText}>
+          {t("onboarding.terms_header_title")}
+        </GlobalText>
+        <EulaLink
+          docName={t("onboarding.privacy_policy")}
+          onPress={linkToPrivacyPolicy}
         />
-      </View>
-    </SafeAreaView>
+        <EulaLink docName={t("onboarding.eula")} onPress={linkToEula} />
+        <View style={style.footerContainer}>
+          <TouchableOpacity
+            style={style.checkboxContainer}
+            onPress={() => toggleCheckbox(!boxChecked)}
+            accessible
+            accessibilityRole="checkbox"
+            accessibilityLabel={checkboxLabel}
+            testID="accept-terms-of-use-checkbox"
+          >
+            <SvgXml
+              xml={checkboxIcon}
+              fill={Colors.primary100}
+              width={Iconography.small}
+              height={Iconography.small}
+            />
+            <GlobalText style={style.checkboxText}>
+              {t("onboarding.eula_agree_terms_of_use")}
+            </GlobalText>
+          </TouchableOpacity>
+          <Button
+            onPress={handleOnPressNext}
+            disabled={!boxChecked}
+            label={t("common.continue")}
+          />
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 
+type EulaLinkProps = {
+  docName: string
+  onPress: () => Promise<void>
+}
+const EulaLink: FunctionComponent<EulaLinkProps> = ({ docName, onPress }) => {
+  const { t } = useTranslation()
+  return (
+    <TouchableOpacity style={style.eulaLinkContainer} onPress={onPress}>
+      <View style={style.eulaTextContainer}>
+        <GlobalText style={style.eulaText}>
+          {t("onboarding.please_read_the")}
+        </GlobalText>
+        <GlobalText style={{ ...style.eulaText, ...style.eulaLink }}>
+          <> {docName}</>
+        </GlobalText>
+      </View>
+      <SvgXml
+        xml={arrow}
+        fill={Colors.primary100}
+        style={style.eulaLinkArrow}
+      />
+    </TouchableOpacity>
+  )
+}
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primaryLightBackground,
+    height: "100%",
+    margin: Spacing.xxLarge,
+  },
+  backgroundGradient: {
     height: "100%",
   },
-  loadingIndicator: {
-    justifyContent: "center",
-    height: "100%",
+  headerText: {
+    ...Typography.header1,
+  },
+  eulaLinkContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: Spacing.small,
+    marginTop: Spacing.large,
+    backgroundColor: Colors.primaryLightBackground,
+    ...Outlines.roundedBorder,
+    ...Outlines.baseShadow,
+    borderColor: Colors.neutral25,
+  },
+  eulaTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    flexWrap: "wrap",
+  },
+  eulaText: {
+    ...Typography.largeFont,
+  },
+  eulaLink: {
+    ...Typography.link,
+    flexWrap: "wrap",
+  },
+  eulaLinkArrow: {
+    flex: 1,
   },
   footerContainer: {
     position: "absolute",
     bottom: 0,
     width: "100%",
-    backgroundColor: Colors.primaryLightBackground,
-    paddingTop: Spacing.large,
-    paddingBottom: Spacing.huge,
-    paddingHorizontal: Spacing.xxLarge,
-    borderTopColor: Colors.neutral75,
-    borderTopWidth: Outlines.hairline,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center",
     marginBottom: Spacing.xxLarge,
+    marginHorizontal: Spacing.xLarge,
   },
   checkboxText: {
     ...Forms.checkboxText,
     color: Colors.primaryText,
     flex: 1,
     paddingLeft: Spacing.medium,
+    ...Typography.largeFont,
   },
 })
 
