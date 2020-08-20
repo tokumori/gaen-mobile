@@ -62,7 +62,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
   const textStyle = { ...determineTextStyle(), ...customTextStyle }
 
   const determineShadowEnabled = (): ViewStyle => {
-    if (disabled || loading) {
+    if (disabled || loading || outlined) {
       return {}
     } else {
       return style.buttonContainerShadow
