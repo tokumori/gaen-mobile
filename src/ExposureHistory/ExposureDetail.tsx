@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react"
-import env from "react-native-config"
 import { View, ScrollView, StyleSheet, Linking } from "react-native"
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native"
 import { useTranslation } from "react-i18next"
@@ -13,6 +12,7 @@ import { ExposureDatum, exposureWindowBucket } from "../exposure"
 
 import { Colors, Iconography, Spacing, Typography } from "../styles"
 import { Icons } from "../assets"
+import { useConfigurationContext } from "../ConfigurationContext"
 
 const ExposureDetail: FunctionComponent = () => {
   const navigation = useNavigation()
@@ -23,9 +23,9 @@ const ExposureDetail: FunctionComponent = () => {
   const { t } = useTranslation()
 
   const {
-    GAEN_AUTHORITY_NAME: healthAuthorityName,
-    AUTHORITY_ADVICE_URL: healthAuthorityLink,
-  } = env
+    healthAuthorityName,
+    healthAuthorityAdviceUrl,
+  } = useConfigurationContext()
   const { exposureDatum } = route.params
 
   const exposureWindowBucketInWords = (
@@ -46,8 +46,8 @@ const ExposureDetail: FunctionComponent = () => {
   }
 
   const handleOnPressNextStep = () => {
-    healthAuthorityLink
-      ? Linking.openURL(healthAuthorityLink)
+    healthAuthorityAdviceUrl
+      ? Linking.openURL(healthAuthorityAdviceUrl)
       : navigation.navigate(Screens.SelfAssessment)
   }
 
