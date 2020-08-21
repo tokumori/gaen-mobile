@@ -125,7 +125,7 @@ const ActivationStack: FunctionComponent = () => {
         name={ActivationScreens.ActivationSummary}
         component={ActivationSummary}
         options={{
-          headerRight: () => HeaderRight({}),
+          headerRight: () => HeaderRight,
         }}
       />
     </Stack.Navigator>
