@@ -86,13 +86,15 @@ const style = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Spacing.large,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     backgroundColor: Colors.primaryLightBackground,
+    paddingBottom: Spacing.huge,
   },
   image: {
     resizeMode: "cover",
     width: 230,
-    height: 180,
+    height: 150,
+    marginBottom: Spacing.medium,
   },
   textContainer: {
     marginBottom: Spacing.xxLarge,
