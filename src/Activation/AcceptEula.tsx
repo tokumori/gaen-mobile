@@ -56,7 +56,7 @@ const AcceptEula: FunctionComponent = () => {
   return (
     <LinearGradient
       start={{ x: 0, y: 0 }}
-      colors={Colors.gradientPrimary10}
+      colors={["rgba(244, 237, 254, 0)", "rgba(248, 248, 255, 1)"]}
       style={style.backgroundGradient}
     >
       <SafeAreaView style={style.container}>
@@ -143,6 +143,8 @@ const style = StyleSheet.create({
     backgroundColor: Colors.primaryLightBackground,
     ...Outlines.roundedBorder,
     ...Outlines.baseShadow,
+    shadowColor: Colors.neutral30,
+    shadowRadius: 5,
     borderColor: Colors.neutral25,
   },
   eulaTextContainer: {

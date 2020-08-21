@@ -49,14 +49,14 @@ const ActivationStack: FunctionComponent = () => {
   }
 
   const activationStepsIOS: ActivationStep[] = [
+    acceptEula,
     activateProximityTracing,
     notificationPermissions,
-    acceptEula,
   ]
 
   const activationStepsAndroid: ActivationStep[] = [
-    activateProximityTracing,
     acceptEula,
+    activateProximityTracing,
   ]
 
   const activationSteps =
