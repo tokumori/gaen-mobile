@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next"
 import { useNavigation } from "@react-navigation/native"
 
 import { GlobalText } from "../components/GlobalText"
+import { Button } from "../components/Button"
+import { GradientBackground } from "../components"
 import { getLocalNames } from "../locales/languages"
-import { Button } from "../components"
 import { useApplicationName } from "../More/useApplicationInfo"
 
 import { Images } from "../assets"
@@ -23,31 +24,37 @@ const Welcome: FunctionComponent = () => {
   useStatusBarEffect("dark-content")
 
   return (
-    <View style={style.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate(Screens.LanguageSelection)}
-        style={style.languageButtonContainer}
-      >
-        <GlobalText style={style.languageButtonText}>{languageName}</GlobalText>
-      </TouchableOpacity>
-      <View>
-        <Image
-          source={Images.PeopleOnNetworkNodes}
-          style={style.image}
-          accessible
-          accessibilityLabel={t("onboarding.welcome_image_label")}
-        />
-        <GlobalText style={style.mainText}>
-          {t("label.launch_screen1_header")}
-        </GlobalText>
-        <GlobalText style={style.mainText}>{applicationName}</GlobalText>
-      </View>
-      <Button
-        label={t("label.launch_get_started")}
-        onPress={() => navigation.navigate(OnboardingScreens.Introduction)}
-        hasRightArrow
-      />
-    </View>
+    <>
+      <GradientBackground>
+        <View style={style.container}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate(Screens.LanguageSelection)}
+            style={style.languageButtonContainer}
+          >
+            <GlobalText style={style.languageButtonText}>
+              {languageName}
+            </GlobalText>
+          </TouchableOpacity>
+          <View>
+            <Image
+              source={Images.PeopleOnNetworkNodes}
+              style={style.image}
+              accessible
+              accessibilityLabel={t("onboarding.welcome_image_label")}
+            />
+            <GlobalText style={style.mainText}>
+              {t("label.launch_screen1_header")}
+            </GlobalText>
+            <GlobalText style={style.mainText}>{applicationName}</GlobalText>
+          </View>
+          <Button
+            label={t("label.launch_get_started")}
+            onPress={() => navigation.navigate(OnboardingScreens.Introduction)}
+            hasRightArrow
+          />
+        </View>
+      </GradientBackground>
+    </>
   )
 }
 
@@ -58,7 +65,6 @@ const style = StyleSheet.create({
     paddingHorizontal: Spacing.large,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: Colors.primaryLightBackground,
   },
   languageButtonContainer: {
     ...Outlines.ovalBorder,
