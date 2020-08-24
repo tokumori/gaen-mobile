@@ -25,6 +25,7 @@ import { GlobalText } from "../components/GlobalText"
 import { Button } from "../components/Button"
 import { isPlatformiOS } from "../utils/index"
 import { getLocalNames } from "../locales/languages"
+import { useBluetoothStatus } from "../useBluetoothStatus"
 
 import { Icons, Images } from "../assets"
 import {
@@ -35,7 +36,6 @@ import {
   Outlines,
   Iconography,
 } from "../styles"
-import { useBluetoothStatus } from "./useBluetoothStatus"
 
 const HomeScreen: FunctionComponent = () => {
   const {

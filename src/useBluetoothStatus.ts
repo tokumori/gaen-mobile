@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Platform, AppState } from "react-native"
-import { isBluetoothEnabled } from "../gaen/nativeModule"
+import { isBluetoothEnabled } from "./gaen/nativeModule"
 
 export const useBluetoothStatus = (): boolean => {
   const [btStatus, setBTStatus] = useState(false)
