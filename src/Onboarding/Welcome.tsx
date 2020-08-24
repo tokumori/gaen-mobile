@@ -24,37 +24,35 @@ const Welcome: FunctionComponent = () => {
   useStatusBarEffect("dark-content")
 
   return (
-    <>
-      <GradientBackground>
-        <View style={style.container}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(Screens.LanguageSelection)}
-            style={style.languageButtonContainer}
-          >
-            <GlobalText style={style.languageButtonText}>
-              {languageName}
-            </GlobalText>
-          </TouchableOpacity>
-          <View>
-            <Image
-              source={Images.PeopleOnNetworkNodes}
-              style={style.image}
-              accessible
-              accessibilityLabel={t("onboarding.welcome_image_label")}
-            />
-            <GlobalText style={style.mainText}>
-              {t("label.launch_screen1_header")}
-            </GlobalText>
-            <GlobalText style={style.mainText}>{applicationName}</GlobalText>
-          </View>
-          <Button
-            label={t("label.launch_get_started")}
-            onPress={() => navigation.navigate(OnboardingScreens.Introduction)}
-            hasRightArrow
+    <GradientBackground>
+      <View style={style.container}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate(Screens.LanguageSelection)}
+          style={style.languageButtonContainer}
+        >
+          <GlobalText style={style.languageButtonText}>
+            {languageName}
+          </GlobalText>
+        </TouchableOpacity>
+        <View>
+          <Image
+            source={Images.PeopleOnNetworkNodes}
+            style={style.image}
+            accessible
+            accessibilityLabel={t("onboarding.welcome_image_label")}
           />
+          <GlobalText style={style.mainText}>
+            {t("label.launch_screen1_header")}
+          </GlobalText>
+          <GlobalText style={style.mainText}>{applicationName}</GlobalText>
         </View>
-      </GradientBackground>
-    </>
+        <Button
+          label={t("label.launch_get_started")}
+          onPress={() => navigation.navigate(OnboardingScreens.Introduction)}
+          hasRightArrow
+        />
+      </View>
+    </GradientBackground>
   )
 }
 
