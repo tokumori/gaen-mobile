@@ -11,7 +11,7 @@ const GradientBackground: FunctionComponent = () => {
       colors={Colors.gradientPrimary10}
       style={style.gradient}
       useAngle
-      angle={180}
+      angle={0}
       angleCenter={{ x: 0.5, y: 0.25 }}
     />
   )
