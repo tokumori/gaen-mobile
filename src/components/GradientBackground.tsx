@@ -1,17 +1,11 @@
-import React, { FunctionComponent, ReactNode } from "react"
+import React, { FunctionComponent } from "react"
 import { StyleSheet } from "react-native"
 
 import LinearGradient from "react-native-linear-gradient"
 
 import { Colors } from "../styles"
 
-interface GradientBackgroundProps {
-  children: ReactNode
-}
-
-const GradientBackground: FunctionComponent<GradientBackgroundProps> = ({
-  children,
-}) => {
+const GradientBackground: FunctionComponent = () => {
   return (
     <LinearGradient
       colors={Colors.gradientPrimary10}
@@ -19,9 +13,7 @@ const GradientBackground: FunctionComponent<GradientBackgroundProps> = ({
       useAngle
       angle={180}
       angleCenter={{ x: 0.5, y: 0.25 }}
-    >
-      {children}
-    </LinearGradient>
+    />
   )
 }
 

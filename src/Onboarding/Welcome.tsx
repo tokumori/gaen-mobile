@@ -8,10 +8,10 @@ import { Button } from "../components/Button"
 import { GradientBackground } from "../components"
 import { getLocalNames } from "../locales/languages"
 import { useApplicationName } from "../More/useApplicationInfo"
+import { Screens, OnboardingScreens, useStatusBarEffect } from "../navigation"
 
 import { Images } from "../assets"
-import { Spacing, Colors, Typography, Outlines } from "../styles"
-import { Screens, OnboardingScreens, useStatusBarEffect } from "../navigation"
+import { Layout, Spacing, Colors, Typography, Outlines } from "../styles"
 
 const Welcome: FunctionComponent = () => {
   const navigation = useNavigation()
@@ -24,7 +24,8 @@ const Welcome: FunctionComponent = () => {
   useStatusBarEffect("dark-content")
 
   return (
-    <GradientBackground>
+    <>
+      <GradientBackground />
       <View style={style.container}>
         <TouchableOpacity
           onPress={() => navigation.navigate(Screens.LanguageSelection)}
@@ -52,12 +53,13 @@ const Welcome: FunctionComponent = () => {
           hasRightArrow
         />
       </View>
-    </GradientBackground>
+    </>
   )
 }
 
 const style = StyleSheet.create({
   container: {
+    ...Layout.positionOverBackground,
     flex: 1,
     paddingVertical: Spacing.xxHuge,
     paddingHorizontal: Spacing.large,
